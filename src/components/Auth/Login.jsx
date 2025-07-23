@@ -23,11 +23,32 @@ const Login = () => {
 
   return(
     <Box>
-        <Typography>Login</Typography>
+        <Typography variant="h4" gutterBottom>Login</Typography>
+        {erorr && <Typography color="error">{erorr}</Typography>}
         <form onSubmit={handleSubmit}>
-            <TextField label="Email" type="email"></TextField>
-            <TextField label="Password" type="password"></TextField>
-            <Button type="submit">Login</Button>
+            <TextField
+                label="Email" type="email"
+                fullWidth
+                margin="normal"
+                value={email}
+                onChange={(e) =>
+                    setEmail(e.target.value)}
+                required
+            ></TextField>
+            <TextField
+                label="Password"
+                type="password"
+                fullWidth
+                margin="normal"
+                onChange={(e) =>
+                    setPassword(e.target.value)}
+                required
+            ></TextField>
+            <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 2 }}
+            >Login</Button>
         </form>
     </Box>
   );
