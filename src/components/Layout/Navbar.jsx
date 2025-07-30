@@ -3,11 +3,11 @@ import {useAuth} from '../../context/AuthContext';
 import {Button, AppBar, Toolbar, Typography} from "@mui/material";
 
 const Navbar = () => {
-    const {user, singOut} = useAuth();
+    const {user, signOut} = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        singOut();
+        signOut();
         navigate("/login");
     }
 
