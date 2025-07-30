@@ -18,6 +18,9 @@ const Navbar = () => {
                     variant="h6" component="div" sx={{flexGrow: 1}}>
                     Tea E-Com
                 </Typography>
+                <Button sx={{marginRight: 2}} color="inherit" 
+                component={Link} to="/dashboard">Dashboard</Button>
+                
                 {user ?(<>
                                 <Typography sx={{fontFamily: "segoe ui"}}>Hello {user.name}</Typography>
                                 <Button
