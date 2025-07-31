@@ -22,7 +22,7 @@ const Login = () => {
   };
 
   return(
-    <Box>
+    <Box width={500} margin="auto" sx={{mt: 10}}>
         <Typography variant="h4" gutterBottom>Login</Typography>
         {erorr && <Typography color="error">{erorr}</Typography>}
         <form onSubmit={handleSubmit}>

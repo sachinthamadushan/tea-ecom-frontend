@@ -12,7 +12,7 @@ const Navbar = () => {
     }
 
     return (
-        <AppBar>
+        <AppBar position="static">
             <Toolbar>
                 <Typography
                     variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -20,6 +20,9 @@ const Navbar = () => {
                 </Typography>
                 <Button sx={{marginRight: 2}} color="inherit" 
                 component={Link} to="/dashboard">Dashboard</Button>
+                
+                <Button sx={{marginRight: 2}} color="inherit" 
+                component={Link} to="/">Home</Button>
                 
                 {user ?(<>
                                 <Typography sx={{fontFamily: "segoe ui"}}>Hello {user.name}</Typography>
