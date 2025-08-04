@@ -172,6 +172,7 @@ const EditProduct = () => {
               <div className="p-3">
                 <button type="submit" 
                 className="btn btn-primary">Update</button>
+                <a href="/dashboard" className="btn btn-danger ms-3">Cancle</a>
               </div>
             </form>
           </div>

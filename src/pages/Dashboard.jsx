@@ -46,7 +46,7 @@ const TextField = ({ placeholder, type, name, value, handleChange }) => {
     );
 };
 
-const ProductTable = ({product_data}) => {
+const ProductTable = ({product_data, onDelete}) => {
     return(
         <div className="">
             <table className="table">
@@ -73,6 +73,8 @@ const ProductTable = ({product_data}) => {
                             <td>
                                 <Link to={`/dashboard/edit/${item._id}`} 
                                 className="btn btn-primary">Edit</Link>
+                                <button className="btn btn-danger ms-3" 
+                                onClick={() => onDelete(item._id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -111,6 +113,26 @@ const Dashboard = () => {
         };
         fetchProducts();
     },[]);
+
+    const handleDelete = async (id) => {
+        if(!window.confirm('Are you sure you want to delete this product?')){
+            return;
+        }
+        try {
+            const response = await 
+            fetch(`http://localhost:5000/api/products/delete/${id}`, {
+                method: "DELETE"
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.message || 'Something went wrong on the server');
+            }
+            setProducts(products.filter((product) => product._id !== id));
+            alert(result.message || 'Product deleted successfully');
+        } catch (error) {
+            alert(error.message);
+        }
+    }
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -196,7 +218,9 @@ const Dashboard = () => {
                     <h1 className="text-center card-title">All Products</h1>
                 </div>
                 <div className="card-body">
-                    <ProductTable product_data={products} />
+                    <ProductTable 
+                    product_data={products}
+                    onDelete={handleDelete} />
                 </div>
             </div>
         </div>
