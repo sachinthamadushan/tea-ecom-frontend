@@ -94,8 +94,7 @@ const Dashboard = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
-    useEffect( () => {
+   useEffect( () => {
         const fetchProducts = async () => {
             try {
                 const response = await fetch("http://localhost:5000/api/products/getAll");
@@ -144,7 +143,6 @@ const Dashboard = () => {
 
             alert(result.message || 'Product created successfully');
             setFormData({ title: '', description: '', price: '', image: null });
-
         } catch (error) {
             console.error("Error from frontend:", error);
             alert(`Error: ${error.message}`);
