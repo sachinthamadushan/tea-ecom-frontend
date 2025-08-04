@@ -1,7 +1,7 @@
 import { useState, useEffect, use } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const TextField = ({ placeholder, type, name, value, handleChange }) => {
+const TextField = ({ placeholder, type, name, value, handleChange, existingImage }) => {
   if (type === "file") {
     return (
       <div className="p-3">
@@ -17,10 +17,14 @@ const TextField = ({ placeholder, type, name, value, handleChange }) => {
           accept="image/*"
         />
         {/* ✅ Image preview */}
-        {value && typeof value === "object" && (
+        {(value || existingImage)  && (
           <div className="mt-3">
             <img
-              src={URL.createObjectURL(value)}
+              src={
+                value
+                  ? URL.createObjectURL(value)
+                  : `http://localhost:5000${existingImage}`
+              }
               alt="Preview"
               className="img-thumbnail"
               style={{ maxHeight: "200px" }}
@@ -163,6 +167,7 @@ const EditProduct = () => {
                 name="image"
                 value={formData.image}
                 handleChange={handleChange}
+                existingImage={formData.existingImage}
               />
               <div className="p-3">
                 <button type="submit" 
