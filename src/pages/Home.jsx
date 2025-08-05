@@ -1,6 +1,49 @@
+import { useEffect, useState } from "react";
+
 const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/products/getAll"
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Fail to load products");
+        }
+        setProducts(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const searchProducts = products.filter((product) => {
+    const query = searchTerm.toLowerCase();
+    return (
+      product.title.toLowerCase().includes(searchTerm.toLowerCase(query)) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase(query)) ||
+      product.price.toString().toLowerCase().includes(searchTerm.toLowerCase(query))
+    );
+  });
+
   const ItemImage = ({ img }) => {
-    return <img src={img} class="card-img-top" alt="..."></img>;
+    console.log(img);
+    return (
+      <img
+        src={`http://localhost:5000${img}`}
+        className="card-img-top"
+        alt="..."
+      ></img>
+    );
   };
 
   const Title = ({ title }) => {
@@ -32,7 +75,8 @@ const Home = () => {
             type="search"
             placeholder="Search"
             aria-label="Search"
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
           />
           <button className="btn btn-primary" type="submit">
             Search
@@ -42,7 +86,7 @@ const Home = () => {
     );
   };
 
-  const Item = ({ img, title, desc, price, btnTitle, btnColor }) => {
+  const Item = ({ img, title, desc, price }) => {
     return (
       <div className="col-md-3 mb-4">
         <div
@@ -59,8 +103,8 @@ const Home = () => {
             <div className="d-flex justify-content-around">
               <Button
                 className="fixed-bottom"
-                btnTitle={btnTitle}
-                btnColor={btnColor}
+                btnTitle="Buy Now"
+                btnColor="btn btn-primary"
               />
               <Button
                 className="fixed-bottom"
@@ -74,63 +118,6 @@ const Home = () => {
     );
   };
 
-  const tea_items = [
-    {
-      id: 1,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-    {
-      id: 2,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-    {
-      id: 3,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-    {
-      id: 4,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-    {
-      id: 5,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-    {
-      id: 6,
-      title: "Green Tea",
-      img: "https://www.seema.com/wp-content/uploads/2022/07/Black-tea.jpg",
-      desc: "Green tea is a type of tea that is made from the leaves",
-      price: "Rs. 500",
-      btnTitle: "Buy Now",
-      btnColor: "btn btn-success",
-    },
-  ];
-
   return (
     <>
       <div className="container mt-5">
@@ -138,19 +125,19 @@ const Home = () => {
           <SearchForm />
         </div>
         <div className="row d-flex g-4 justify-content-center  align-items-justify">
-          {tea_items.map((item) => {
-            return (
+          {searchProducts.lenght === 0 ? (
+            <h1>No products found</h1>
+          ) : (
+            searchProducts.map((product) => (
               <Item
-                img={item.img}
-                title={item.title}
-                desc={item.desc}
-                price={item.price}
-                btnTitle={item.btnTitle}
-                btnColor={item.btnColor}
-                key={item.id}
+                key={product._id}
+                img={product.image}
+                title={product.title}
+                desc={product.description}
+                price={product.price}
               />
-            );
-          })}
+            ))
+          )}
         </div>
       </div>
     </>
